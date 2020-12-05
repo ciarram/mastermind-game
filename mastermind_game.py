@@ -44,6 +44,50 @@ game_display = pygame.display.set_mode((800, 650))
 game_display.fill(grey)
 
 
+def evaluation_inner(guess, comp_answers):
+    # Get the length n of the guess and the code.
+    assert (len(guess) == len(comp_answers))
+    n = len(guess)
+
+    # assigns empty lists to hold the correct positions for a game and the incorrect positions
+    #correct_positions = []
+    #incorrect_positions = []
+
+    # Determine the correct and incorrect positions.
+
+    correct_positions = [i for i in list(range(n)) if guess[i] == comp_answers[i]]
+    #incorrect and correct positions need to be the index
+    #for i in range(n):
+        #if guess[i] == comp_answers[i]:
+            #correct_positions.append(i)
+
+       # elif guess[i] != comp_answers[i]:
+            #incorrect_positions.append(i)
+    incorrect_positions = [i for i in list(range(n)) if guess[i] != comp_answers[i]]
+
+    num_correct = len(correct_positions)
+
+    # Reduce the guess and the computer answers by removing the correct positions.
+    # Create the set values that are common between the two reduced lists.
+    #reduced_guess = []
+    #reduced_code = []
+
+    #for j in incorrect_positions:
+        #reduced_guess.append(j)
+        #reduced_code.append(j)
+
+    reduced_guess = [guess[i] for i in incorrect_positions]
+    reduced_code = [comp_answers[i] for i in incorrect_positions]
+    reduced_set = set(reduced_guess) & set(reduced_guess)
+
+    # Determine the number of transposed values.
+    num_transposed = 0
+    for x in reduced_set:
+        num_transposed += min(reduced_guess.count(x), reduced_code.count(x))
+
+    return num_correct, num_transposed
+
+
 def draw_board():
     """creates all of the circle, both for the codebreaker and codemaker"""
     # creates all of the main circles for play
@@ -64,8 +108,8 @@ def draw_board():
 
     pygame.draw.circle(game_display, board[3][0], (100, 280), 25)
     pygame.draw.circle(game_display, board[3][1], (200, 280), 25)
-    pygame.draw.circle(game_display, board[3][2], (400, 280), 25)
-    pygame.draw.circle(game_display, board[3][3], (300, 280), 25)
+    pygame.draw.circle(game_display, board[3][2], (300, 280), 25)
+    pygame.draw.circle(game_display, board[3][3], (400, 280), 25)
 
     pygame.draw.circle(game_display, board[4][0], (100, 340), 25)
     pygame.draw.circle(game_display, board[4][1], (200, 340), 25)
@@ -140,7 +184,7 @@ while True:
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
-                print("Up Arrow")
+                #print("Up Arrow")
                 # if the color is initially white, it assigns it to the first color in the codebreaker_colors list
                 # and updates the board
                 if board[col][row] is codemaker_colors[0]:
@@ -155,54 +199,54 @@ while True:
                     board[col][row] = codebreaker_colors[cur_index]
                     draw_board()
 
+                print("Up: ", col, row)
+
             if event.key == pygame.K_DOWN:
-                print("Down Arrow")
+                #print("Down Arrow")
                 if board[col][row] is codemaker_colors[0]:
                     board[col][row] = codebreaker_colors[0]
                     draw_board()
                 else:
                     cur_index = codebreaker_colors.index(board[col][row])
                     cur_index -= 1
-                    cur_inde = cur_index % 6
+                    cur_index = cur_index % 6
                     board[col][row] = codebreaker_colors[cur_index]
                     draw_board()
+                print("Down: ", col, row)
 
             if event.key == pygame.K_LEFT:
-                print("Left Arrow")
+                #print("Left Arrow")
                 row -= 1
                 row = row % 4
+                print("Left: ", col, row)
 
             if event.key == pygame.K_RIGHT:
-                print("Right Arrow")
+                #print("Right Arrow")
                 row += 1
                 row = row % 4
+                print("Right: ", col, row)
 
             if event.key == pygame.K_RETURN:
                 print("Pressed Enter")
+                # initialize a list to hold the current guesses for a column
+                guess = []
+                for guess_index in range(4):
+                    guess.append(codebreaker_colors.index(board[col][guess_index]))
+                nc, nt = evaluation_inner(guess, comp_answers)
+                print(nc, nt)
 
-                def evaluation_inner(guess, fakeCode):
+                # shows the pegs to be either black or white if the guess is correct or transposed
+                row = 4
+                for correct in range(nc):
+                    board[col][row] = codemaker_colors[1]
+                    row += 1
 
-                    # Get the length n of the guess and the code.
-                    assert (len(guess) == len(fakeCode))
-                    n = len(guess)
-
-                    # Determine the correct and incorrect positions.
-                    correct_positions = [i for i in list(range(n)) if guess[i] == fakeCode[i]]
-                    incorrect_positions = [i for i in list(range(n)) if guess[i] != fakeCode[i]]
-                    num_correct = len(correct_positions)
-
-                    # Reduce the guess and the fakeCode by removing the correct positions.
-                    # Create the set values that are common between the two reduced lists.
-                    reduced_guess = [guess[i] for i in incorrect_positions]
-                    reduced_code = [fakeCode[i] for i in incorrect_positions]
-                    reduced_set = set(reduced_guess) & set(reduced_guess)
-
-                    # Determine the number of transposed values.
-                    num_transposed = 0
-                    for x in reduced_set:
-                        num_transposed += min(reduced_guess.count(x), reduced_code.count(x))
-
-                    return num_correct, num_transposed
+                for transposed in range(nt):
+                    board[col][row] = codemaker_colors[0]
+                    row += 1
+                draw_board()
+                col += 1
+                row = 0
 
     pygame.display.update()
 
