@@ -15,6 +15,11 @@ yellow = (255, 255, 0)
 purple = (166, 77, 255)
 orange = (255, 162, 0)
 
+# creates the font and statements that print when a game is won or lost
+font = pygame.font.SysFont(None, 24)
+game_won = font.render("You Won! You're a Mastermind!!!", True, green)
+game_lost = font.render("Game Over, You Lost.", True, red)
+
 # initializes the row and column variables to use when moving the arrows
 row = 0
 col = 0
@@ -44,46 +49,34 @@ game_display = pygame.display.set_mode((800, 650))
 game_display.fill(grey)
 
 
-def evaluation_inner(guess, comp_answers):
+def my_guess(guess, comp_answers):
+    """Encompasses the algorithm of the program. This function compares how many correct guesses the user enter and how
+    many transposed answers there are. """
     # Get the length n of the guess and the code.
     assert (len(guess) == len(comp_answers))
     n = len(guess)
 
-    # assigns empty lists to hold the correct positions for a game and the incorrect positions
-    #correct_positions = []
-    #incorrect_positions = []
+    num_correct = 0
+    reduced_guess = []
+    reduced_code = []
 
     # Determine the correct and incorrect positions.
 
-    correct_positions = [i for i in list(range(n)) if guess[i] == comp_answers[i]]
-    #incorrect and correct positions need to be the index
-    #for i in range(n):
-        #if guess[i] == comp_answers[i]:
-            #correct_positions.append(i)
-
-       # elif guess[i] != comp_answers[i]:
-            #incorrect_positions.append(i)
-    incorrect_positions = [i for i in list(range(n)) if guess[i] != comp_answers[i]]
-
-    num_correct = len(correct_positions)
-
-    # Reduce the guess and the computer answers by removing the correct positions.
-    # Create the set values that are common between the two reduced lists.
-    #reduced_guess = []
-    #reduced_code = []
-
-    #for j in incorrect_positions:
-        #reduced_guess.append(j)
-        #reduced_code.append(j)
-
-    reduced_guess = [guess[i] for i in incorrect_positions]
-    reduced_code = [comp_answers[i] for i in incorrect_positions]
-    reduced_set = set(reduced_guess) & set(reduced_guess)
+    for i in range(n):
+        if guess[i] == comp_answers[i]:
+            num_correct += 1
+        else:
+            reduced_guess.append(guess[i])
+            reduced_code.append(comp_answers[i])
 
     # Determine the number of transposed values.
     num_transposed = 0
-    for x in reduced_set:
-        num_transposed += min(reduced_guess.count(x), reduced_code.count(x))
+    for i in range(len(reduced_guess)):
+        for j in range(len(reduced_code)):
+            if reduced_guess[i] == reduced_code[j]:
+                num_transposed += 1
+                reduced_code.pop(j)
+                break
 
     return num_correct, num_transposed
 
@@ -232,7 +225,7 @@ while True:
                 guess = []
                 for guess_index in range(4):
                     guess.append(codebreaker_colors.index(board[col][guess_index]))
-                nc, nt = evaluation_inner(guess, comp_answers)
+                nc, nt = my_guess(guess, comp_answers)
                 print(nc, nt)
 
                 # shows the pegs to be either black or white if the guess is correct or transposed
@@ -247,6 +240,13 @@ while True:
                 draw_board()
                 col += 1
                 row = 0
+
+                # checks for when all of the pegs are all black, if they are the game is won
+                if nc == 4:
+                    game_display.blit(game_won, (20, 20))
+                # if the player doesn't guess correctly by the last line of the board, the game is over
+                elif col >= 8:
+                    game_display.blit(game_lost, (20, 20))
 
     pygame.display.update()
 
