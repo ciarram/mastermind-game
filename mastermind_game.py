@@ -19,6 +19,7 @@ orange = (255, 162, 0)
 font = pygame.font.SysFont(None, 24)
 game_won = font.render("You Won! You're a Mastermind!!!", True, green)
 game_lost = font.render("Game Over, You Lost.", True, red)
+pygame.display.set_caption("Mastermind")
 
 # initializes the row and column variables to use when moving the arrows
 row = 0
@@ -52,7 +53,8 @@ game_display.fill(grey)
 def my_guess(guess, comp_answers):
     """Encompasses the algorithm of the program. This function compares how many correct guesses the user enter and how
     many transposed answers there are. """
-    # Get the length n of the guess and the code.
+
+    # Get the length n of the guess and the computer answers.
     assert (len(guess) == len(comp_answers))
     n = len(guess)
 
@@ -61,7 +63,6 @@ def my_guess(guess, comp_answers):
     reduced_code = []
 
     # Determine the correct and incorrect positions.
-
     for i in range(n):
         if guess[i] == comp_answers[i]:
             num_correct += 1
@@ -192,7 +193,7 @@ while True:
                     board[col][row] = codebreaker_colors[cur_index]
                     draw_board()
 
-                print("Up: ", col, row)
+                #print("Up: ", col, row)
 
             if event.key == pygame.K_DOWN:
                 #print("Down Arrow")
@@ -205,19 +206,19 @@ while True:
                     cur_index = cur_index % 6
                     board[col][row] = codebreaker_colors[cur_index]
                     draw_board()
-                print("Down: ", col, row)
+                #print("Down: ", col, row)
 
             if event.key == pygame.K_LEFT:
                 #print("Left Arrow")
                 row -= 1
                 row = row % 4
-                print("Left: ", col, row)
+                #print("Left: ", col, row)
 
             if event.key == pygame.K_RIGHT:
                 #print("Right Arrow")
                 row += 1
                 row = row % 4
-                print("Right: ", col, row)
+                #print("Right: ", col, row)
 
             if event.key == pygame.K_RETURN:
                 print("Pressed Enter")
@@ -244,9 +245,16 @@ while True:
                 # checks for when all of the pegs are all black, if they are the game is won
                 if nc == 4:
                     game_display.blit(game_won, (20, 20))
+                    pygame.display.update()
+                    pygame.time.wait(3000)
+                    pygame.quit()
+
                 # if the player doesn't guess correctly by the last line of the board, the game is over
                 elif col >= 8:
                     game_display.blit(game_lost, (20, 20))
+                    pygame.display.update()
+                    pygame.time.wait(3000)
+                    pygame.quit()
 
     pygame.display.update()
 
