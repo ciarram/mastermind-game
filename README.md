@@ -5,6 +5,7 @@ How to Run the Game:
 3) The game is on when a picture with eight rows of 4 circles appears on the top right corner of the webpage. 
 4) To start playing the game, first place your mouse cursor on the picture and click on it. This focuses the code on the board. Now you can begin.
 5) Press on the Up arrow on your keyboard to start looking through your options for colors. They are: Red, Green, Blue, Yellow, Purple and Orange. You can also press the Down arrow to go back to any previous color in the list. 
+     ** On Repl.it, there is a slight delay after pressing either arrow to change the colors. Do not be alarmed by this, it doesn't interfere with the game. 
 6) Once you select a color, press the Right arrow key to move one space right and fill in the next circle by repeating step 5. You can use the Left arrow key to go back one to the left if you need to change a circle.
   ** Do not press the Left arrow if you are on the far left circle of the row. 
 7) Once you have four colors in a row selected, press Enter/Return
