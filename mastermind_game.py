@@ -3,7 +3,7 @@ import random
 
 pygame.init()
 
-# these define the colors used in the game
+# defines the colors used in the game
 white = (255, 255, 255)
 black = (0, 0, 0)
 # grey = (128, 128, 128)
@@ -25,11 +25,18 @@ pygame.display.set_caption("Mastermind")
 row = 0
 col = 0
 
+# lists that hold the colors for the different players
+codebreaker_colors = [red, green, blue, yellow, purple, orange]
+codebreaker_str = ["red", "green", "blue", "yellow", "purple", "orange"]
+codemaker_colors = [white, black, grey]
+
 # creates a list of random numbers to use as the computer's answers for the game; these will be used to compare to the
 # user's input.
+print('\n' "The correct code for testing purposes is:")
 comp_answers = [random.randint(0, 5) for x in range(4)]
-
-print(str(comp_answers))
+for color_index in comp_answers:
+    print(codebreaker_str[color_index], end=" ")
+print('\n')
 
 # creates a list of list to hold all of the initial values for the board when the code starts running;
 # the grey pegs not be visible until the codebreaker finishes a row
@@ -41,9 +48,6 @@ board = [[white, white, white, white, grey, grey, grey, grey],
          [white, white, white, white, grey, grey, grey, grey],
          [white, white, white, white, grey, grey, grey, grey],
          [white, white, white, white, grey, grey, grey, grey]]
-
-codebreaker_colors = [red, green, blue, yellow, purple, orange]
-codemaker_colors = [white, black, grey]
 
 # sets up the size of the game board and the background color
 game_display = pygame.display.set_mode((800, 650))
@@ -58,11 +62,12 @@ def my_guess(guess, comp_answers):
     assert (len(guess) == len(comp_answers))
     n = len(guess)
 
+    # assigns the variable to count the correct color/location pairs and lists to hold the values that aren't
     num_correct = 0
     reduced_guess = []
     reduced_code = []
 
-    # Determine the correct and incorrect positions.
+    # Determines the correct and incorrect positions.
     for i in range(n):
         if guess[i] == comp_answers[i]:
             num_correct += 1
@@ -76,6 +81,7 @@ def my_guess(guess, comp_answers):
         for j in range(len(reduced_code)):
             if reduced_guess[i] == reduced_code[j]:
                 num_transposed += 1
+                # needed to remove the value compared so there are no repeats
                 reduced_code.pop(j)
                 break
 
@@ -176,9 +182,9 @@ while True:
             pygame.quit()
             quit()
 
+        # these sections handle all of the key movements the player makes
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
-                #print("Up Arrow")
                 # if the color is initially white, it assigns it to the first color in the codebreaker_colors list
                 # and updates the board
                 if board[col][row] is codemaker_colors[0]:
@@ -193,10 +199,9 @@ while True:
                     board[col][row] = codebreaker_colors[cur_index]
                     draw_board()
 
-                #print("Up: ", col, row)
-
             if event.key == pygame.K_DOWN:
-                #print("Down Arrow")
+                # if the color is initially white, it assigns it to the first color in the codebreaker_colors list
+                # and updates the board
                 if board[col][row] is codemaker_colors[0]:
                     board[col][row] = codebreaker_colors[0]
                     draw_board()
@@ -206,52 +211,53 @@ while True:
                     cur_index = cur_index % 6
                     board[col][row] = codebreaker_colors[cur_index]
                     draw_board()
-                #print("Down: ", col, row)
 
             if event.key == pygame.K_LEFT:
-                #print("Left Arrow")
+                # shifts the selection one to the left
                 row -= 1
                 row = row % 4
-                #print("Left: ", col, row)
 
             if event.key == pygame.K_RIGHT:
-                #print("Right Arrow")
+                # shifts the selection one to the right
                 row += 1
                 row = row % 4
-                #print("Right: ", col, row)
 
             if event.key == pygame.K_RETURN:
-                print("Pressed Enter")
-                # initialize a list to hold the current guesses for a column
+                #print("Pressed Enter")
+                # list holds the current guesses for a column after the user presses enter
                 guess = []
                 for guess_index in range(4):
                     guess.append(codebreaker_colors.index(board[col][guess_index]))
+                # assigns the values returned by the function
                 nc, nt = my_guess(guess, comp_answers)
-                print(nc, nt)
+                #print(nc, nt)
 
                 # shows the pegs to be either black or white if the guess is correct or transposed
                 row = 4
                 for correct in range(nc):
+                    # black pegs
                     board[col][row] = codemaker_colors[1]
                     row += 1
 
                 for transposed in range(nt):
+                    # white pegs
                     board[col][row] = codemaker_colors[0]
                     row += 1
+                # redraws the board and moves down a row
                 draw_board()
                 col += 1
                 row = 0
 
                 # checks for when all of the pegs are all black, if they are the game is won
                 if nc == 4:
-                    game_display.blit(game_won, (20, 20))
+                    game_display.blit(game_won, (20, 600))
                     pygame.display.update()
                     pygame.time.wait(3000)
                     pygame.quit()
 
                 # if the player doesn't guess correctly by the last line of the board, the game is over
                 elif col >= 8:
-                    game_display.blit(game_lost, (20, 20))
+                    game_display.blit(game_lost, (20, 600))
                     pygame.display.update()
                     pygame.time.wait(3000)
                     pygame.quit()
