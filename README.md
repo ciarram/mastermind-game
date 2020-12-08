@@ -1,6 +1,9 @@
 # mastermind-game
+** The codemaker answers are displayed in the terminal for ease of testing. 
+This allows you to visually confirm that the black, white and grey pegs have been assigned appropriately while running the game. 
+
 How to Run the Game: 
-1) To open the game, follow the link to https://repl.it/@murphyci/Mastermind-Game2#main.py. 
+1) To open the game, follow the link to https://repl.it/@murphyci/Mastermind-Game#main.py. 
 2) Click on the Run button at the top (this tends to run slow and the first time you press Run, it loads all of the associated programs and exit on its own. It may take two or three times of pressing Run for it to work.)
 3) The game is on when a picture with eight rows of 4 circles appears on the top right corner of the webpage. 
 4) To start playing the game, first place your mouse cursor on the picture and click on it. This focuses the code on the board. Now you can begin.
