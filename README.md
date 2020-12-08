@@ -13,7 +13,7 @@ How to Run the Game:
   ** Do not press the Left arrow if you are on the far left circle of the row. 
 7) Once you have four colors in a row selected, press Enter/Return
   ** Do not press Enter/Return if you do not have all four circles filled with a color. If any circle in the current row is white when you press enter, you will need to press Run to start a new game.
-8) After you press Enter, up to four circles will apper to the right of the row you are currently on. These mean:
+8) After you press Enter, up to four circles will appear to the right of the row you are currently on. These mean:
     1) Black Circle - this means that a guess you made is both the right color and in the correct position in the row
     2) White Circle - this means that a guess you made is the right color but it's in the wrong position
     3) If a spot remains grey with no circle, this means that a guess you made is the wrong color and isn't on the board at all. 
