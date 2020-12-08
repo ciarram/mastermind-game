@@ -4,9 +4,9 @@ This allows you to visually confirm that the black, white and grey pegs have bee
 
 How to Run the Game: 
 1) To open the game, follow the link to https://repl.it/@murphyci/Mastermind-Game#main.py. 
-2) Click on the Run button at the top (this tends to run slow and the first time you press Run, it loads all of the associated programs and exit on its own. It may take two or three times of pressing Run for it to work.)
+2) Click on the Run button at the top (this tends to run slow and the first time you press Run, it loads all of the associated modules and exit on its own. It may take two or three times of pressing Run for it to work.)
 3) The game is on when a picture with eight rows of 4 circles appears on the top right corner of the webpage. 
-4) To start playing the game, first place your mouse cursor on the picture and click on it. This focuses the code on the board. Now you can begin.
+4) To start playing the game, first place your mouse cursor on the game and click on it. This puts the keyboard focus on the game so you can use the keyboard arrows and Enter/Return key to play. Now you can begin.
 5) Press on the Up arrow on your keyboard to start looking through your options for colors. They are: Red, Green, Blue, Yellow, Purple and Orange. You can also press the Down arrow to go back to any previous color in the list. 
      ** On Repl.it, there is a slight delay after pressing either arrow to change the colors. Do not be alarmed by this, it doesn't interfere with the game. 
 6) Once you select a color, press the Right arrow key to move one space right and fill in the next circle by repeating step 5. You can use the Left arrow key to go back one to the left if you need to change a circle.
